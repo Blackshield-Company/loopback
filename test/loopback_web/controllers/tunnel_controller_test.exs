@@ -12,12 +12,16 @@ defmodule LoopbackWeb.TunnelControllerTest do
     Registry.clear()
     TransformRegistry.clear()
     ETS.clear()
+    Loopback.Chaos.reset()
     {:ok, pid} = TestTargetServer.start()
     {:ok, target_url: TestTargetServer.url(pid), server: pid}
   end
 
   describe "forward/2" do
-    test "forwards a GET request preserving path and query string", %{conn: conn, target_url: target_url} do
+    test "forwards a GET request preserving path and query string", %{
+      conn: conn,
+      target_url: target_url
+    } do
       {:ok, tunnel} = Tunnels.create_tunnel(target_url)
 
       conn =

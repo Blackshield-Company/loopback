@@ -5,6 +5,8 @@ defmodule Loopback.ChaosTest do
 
   setup do
     Chaos.reset()
+    # Chaos mode is global state; don't leak an enabled config into other tests.
+    on_exit(fn -> Chaos.reset() end)
     :ok
   end
 

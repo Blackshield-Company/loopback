@@ -65,7 +65,8 @@ defmodule LoopbackWeb.TunnelDetailLiveTest do
 
     [request] = Captures.list_requests(tunnel.id)
 
-    html = element(lv, "button[phx-click='select_request']") |> render_click(%{"id" => request.id})
+    html =
+      element(lv, "button[phx-click='select_request']") |> render_click(%{"id" => request.id})
 
     assert html =~ "Request Detail"
     assert html =~ "POST"

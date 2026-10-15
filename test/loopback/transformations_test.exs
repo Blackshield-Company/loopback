@@ -69,7 +69,14 @@ defmodule Loopback.TransformationsTest do
 
       assert :ok = Transformations.set_script("tunnel-1", script)
 
-      ctx = %{method: "POST", path: "/api", query_string: nil, headers: [{"content-type", "application/json"}], body: ~s({"test": true})}
+      ctx = %{
+        method: "POST",
+        path: "/api",
+        query_string: nil,
+        headers: [{"content-type", "application/json"}],
+        body: ~s({"test": true})
+      }
+
       assert {:ok, result} = Transformations.transform("tunnel-1", ctx)
       assert result.headers == [{"x-transformed", "true"}, {"content-type", "application/json"}]
     end
@@ -83,7 +90,14 @@ defmodule Loopback.TransformationsTest do
 
       assert :ok = Transformations.set_script("tunnel-1", script)
 
-      ctx = %{method: "POST", path: "/api", query_string: nil, headers: [{"content-type", "application/json"}], body: ~s({"event": "push"})}
+      ctx = %{
+        method: "POST",
+        path: "/api",
+        query_string: nil,
+        headers: [{"content-type", "application/json"}],
+        body: ~s({"event": "push"})
+      }
+
       assert {:ok, result} = Transformations.transform("tunnel-1", ctx)
       assert Jason.decode!(result.body) == %{"event" => "push", "injected" => true}
     end

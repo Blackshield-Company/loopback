@@ -41,7 +41,10 @@ defmodule LoopbackWeb.WebhookVerificationControllerTest do
       request =
         build_captured_request(
           body: payload,
-          headers: [{"x-hub-signature-256", "sha256=0000000000000000000000000000000000000000000000000000000000000000"}]
+          headers: [
+            {"x-hub-signature-256",
+             "sha256=0000000000000000000000000000000000000000000000000000000000000000"}
+          ]
         )
 
       conn =

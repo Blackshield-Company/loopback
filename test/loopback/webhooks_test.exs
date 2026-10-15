@@ -108,7 +108,9 @@ defmodule Loopback.WebhooksTest do
       payload = ~s({"id": "evt_123"})
       secret = "whsec_test_secret"
       timestamp = System.system_time(:second)
-      header = "t=#{timestamp},v1=0000000000000000000000000000000000000000000000000000000000000000"
+
+      header =
+        "t=#{timestamp},v1=0000000000000000000000000000000000000000000000000000000000000000"
 
       assert {:error, :invalid_signature} = Webhooks.verify_stripe(payload, secret, header)
     end
@@ -156,7 +158,9 @@ defmodule Loopback.WebhooksTest do
       payload = ~s({"id": "evt_123"})
       secret = "whsec_test_secret"
 
-      assert {:error, :missing_timestamp} = Webhooks.verify_stripe(payload, secret, "not_a_header")
+      assert {:error, :missing_timestamp} =
+               Webhooks.verify_stripe(payload, secret, "not_a_header")
+
       assert {:error, :malformed_header} = Webhooks.verify_stripe(payload, secret, "t=abc,v1=def")
     end
   end
