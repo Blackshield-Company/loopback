@@ -1,3 +1,5 @@
+![loopback](.github/preview.png)
+
 # loopback
 
 > Self-hosted webhook testing tunnel like ngrok but with replay, inspection, programmable transformations... AND a chaos mode that randomly delays, drops, or corrupts requests.
