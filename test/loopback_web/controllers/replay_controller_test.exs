@@ -92,6 +92,7 @@ defmodule LoopbackWeb.ReplayControllerTest do
       path_info: String.split(path, "/", trim: true),
       query_string: "",
       req_headers: [{"accept", "application/json"}],
-      assigns: if(body, do: %{raw_body: Jason.encode!(body)}, else: %{})}
+      assigns: if(body, do: %{raw_body: Jason.encode!(body)}, else: %{})
+    }
   end
 end

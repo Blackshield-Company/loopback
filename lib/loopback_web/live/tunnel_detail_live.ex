@@ -453,19 +453,25 @@ defmodule LoopbackWeb.TunnelDetailLive do
 
   @impl true
   def handle_event("toggle_replay_mode", _params, socket) do
-    {:noreply, assign(socket, replay_mode: !socket.assigns.replay_mode, replay_result: nil, replay_error: nil)}
+    {:noreply,
+     assign(socket,
+       replay_mode: !socket.assigns.replay_mode,
+       replay_result: nil,
+       replay_error: nil
+     )}
   end
 
   @impl true
   def handle_event("replay_modified", params, socket) do
-    modifications = %{
-      method: Map.get(params, "method"),
-      path: Map.get(params, "path"),
-      query_string: nilify_empty(Map.get(params, "query_string")),
-      body: nilify_empty(Map.get(params, "body"))
-    }
-    |> Enum.reject(fn {_k, v} -> is_nil(v) end)
-    |> Map.new()
+    modifications =
+      %{
+        method: Map.get(params, "method"),
+        path: Map.get(params, "path"),
+        query_string: nilify_empty(Map.get(params, "query_string")),
+        body: nilify_empty(Map.get(params, "body"))
+      }
+      |> Enum.reject(fn {_k, v} -> is_nil(v) end)
+      |> Map.new()
 
     case do_replay(socket, modifications) do
       {:ok, request} ->
@@ -506,7 +512,8 @@ defmodule LoopbackWeb.TunnelDetailLive do
 
     case Transformations.transform(tunnel_id, sample_ctx) do
       {:ok, _} when socket.assigns.transform_script == "" and script_text == "" ->
-        {:noreply, assign(socket, transform_error: "Script cannot be empty", transform_success: nil)}
+        {:noreply,
+         assign(socket, transform_error: "Script cannot be empty", transform_success: nil)}
 
       _ ->
         :ok = Transformations.set_script(tunnel_id, script_text)
@@ -560,7 +567,8 @@ defmodule LoopbackWeb.TunnelDetailLive do
          )}
 
       {:error, reason} ->
-        {:noreply, assign(socket, transform_error: "Test failed: #{reason}", transform_success: nil)}
+        {:noreply,
+         assign(socket, transform_error: "Test failed: #{reason}", transform_success: nil)}
     end
   end
 

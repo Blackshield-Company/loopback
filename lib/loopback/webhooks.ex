@@ -33,7 +33,8 @@ defmodule Loopback.Webhooks do
   Returns `:ok` if the signature is valid, `{:error, reason}` otherwise.
   """
   @spec verify_github(binary(), String.t(), String.t()) :: :ok | {:error, atom()}
-  def verify_github(payload, secret, header) when is_binary(payload) and is_binary(secret) and is_binary(header) do
+  def verify_github(payload, secret, header)
+      when is_binary(payload) and is_binary(secret) and is_binary(header) do
     with "sha256=" <> expected_hex <- header do
       expected = Base.decode16!(expected_hex, case: :mixed)
       actual = Signature.hmac_sha256(secret, payload)

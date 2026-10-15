@@ -23,7 +23,12 @@ defmodule Loopback.ReplayTest do
 
       # Simulate a captured POST request
       conn = build_conn("POST", "/api/events", %{"event" => "push"})
-      request = Captures.capture_request(conn, tunnel.id, response_status: 200, response_body: ~s({"ok": true}))
+
+      request =
+        Captures.capture_request(conn, tunnel.id,
+          response_status: 200,
+          response_body: ~s({"ok": true})
+        )
 
       # Replay it
       assert {:ok, replayed} = Replay.replay_request(request.id)
@@ -54,7 +59,9 @@ defmodule Loopback.ReplayTest do
       conn = build_conn("GET", "/api/events")
       request = Captures.capture_request(conn, tunnel.id, response_status: 200)
 
-      assert {:ok, replayed} = Replay.replay_request(request.id, %{method: "POST", body: ~s({"test": true})})
+      assert {:ok, replayed} =
+               Replay.replay_request(request.id, %{method: "POST", body: ~s({"test": true})})
+
       assert replayed.method == "POST"
       assert replayed.response_status == 200
     end
@@ -76,7 +83,9 @@ defmodule Loopback.ReplayTest do
       conn = build_conn("GET", "/api/events")
       request = Captures.capture_request(conn, tunnel.id, response_status: 200)
 
-      assert {:ok, replayed} = Replay.replay_request(request.id, %{query_string: "foo=bar&baz=qux"})
+      assert {:ok, replayed} =
+               Replay.replay_request(request.id, %{query_string: "foo=bar&baz=qux"})
+
       assert replayed.query_string == "foo=bar&baz=qux"
       assert replayed.response_status == 200
     end
@@ -87,9 +96,10 @@ defmodule Loopback.ReplayTest do
       conn = build_conn("GET", "/api/events", nil, [{"x-original", "value"}])
       request = Captures.capture_request(conn, tunnel.id, response_status: 200)
 
-      assert {:ok, replayed} = Replay.replay_request(request.id, %{
-        headers: [{"x-modified", "new-value"}, {"accept", "application/xml"}]
-      })
+      assert {:ok, replayed} =
+               Replay.replay_request(request.id, %{
+                 headers: [{"x-modified", "new-value"}, {"accept", "application/xml"}]
+               })
 
       assert replayed.headers == [{"x-modified", "new-value"}, {"accept", "application/xml"}]
       assert replayed.response_status == 200
@@ -112,13 +122,14 @@ defmodule Loopback.ReplayTest do
       conn = build_conn("GET", "/old", nil, [{"x-old", "old"}])
       request = Captures.capture_request(conn, tunnel.id, response_status: 200)
 
-      assert {:ok, replayed} = Replay.replay_request(request.id, %{
-        method: "POST",
-        path: "/new",
-        query_string: "new=param",
-        headers: [{"x-new", "new"}],
-        body: ~s({"new": true})
-      })
+      assert {:ok, replayed} =
+               Replay.replay_request(request.id, %{
+                 method: "POST",
+                 path: "/new",
+                 query_string: "new=param",
+                 headers: [{"x-new", "new"}],
+                 body: ~s({"new": true})
+               })
 
       assert replayed.method == "POST"
       assert replayed.path == "/new"
@@ -152,6 +163,7 @@ defmodule Loopback.ReplayTest do
       path_info: String.split(path, "/", trim: true),
       query_string: "",
       req_headers: headers,
-      assigns: if(body, do: %{raw_body: Jason.encode!(body)}, else: %{})}
+      assigns: if(body, do: %{raw_body: Jason.encode!(body)}, else: %{})
+    }
   end
 end

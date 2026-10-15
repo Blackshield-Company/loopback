@@ -15,7 +15,10 @@ defmodule LoopbackWeb.TransformationsControllerTest do
   describe "GET /api/tunnels/:tunnel_id/transformation" do
     test "returns 404 when no script exists", %{conn: conn, tunnel: tunnel} do
       conn = get(conn, "/api/tunnels/#{tunnel.id}/transformation")
-      assert json_response(conn, 404) == %{"error" => "no transformation script found for this tunnel"}
+
+      assert json_response(conn, 404) == %{
+               "error" => "no transformation script found for this tunnel"
+             }
     end
 
     test "returns the script when it exists", %{conn: conn, tunnel: tunnel} do

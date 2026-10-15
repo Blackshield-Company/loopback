@@ -66,7 +66,8 @@ defmodule LoopbackWeb.WebhookVerificationController do
 
   defp fetch_request(_), do: {:error, :missing_request_id}
 
-  defp fetch_provider(%{"provider" => provider}) when provider in ["github", "stripe", "generic"] do
+  defp fetch_provider(%{"provider" => provider})
+       when provider in ["github", "stripe", "generic"] do
     {:ok, String.to_atom(provider)}
   end
 
@@ -142,10 +143,16 @@ defmodule LoopbackWeb.WebhookVerificationController do
   defp format_error(:missing_timestamp), do: "signature header is missing timestamp"
   defp format_error(:missing_signature), do: "signature header is missing signature"
   defp format_error(:timestamp_too_old), do: "signature timestamp is too old"
-  defp format_error(:missing_signature_header), do: "request is missing the expected signature header"
+
+  defp format_error(:missing_signature_header),
+    do: "request is missing the expected signature header"
+
   defp format_error(:missing_request_id), do: "missing request_id parameter"
   defp format_error(:missing_provider), do: "missing provider parameter"
-  defp format_error(:unknown_provider), do: "unknown provider (expected github, stripe, or generic)"
+
+  defp format_error(:unknown_provider),
+    do: "unknown provider (expected github, stripe, or generic)"
+
   defp format_error(:missing_secret), do: "missing secret parameter"
   defp format_error(other), do: to_string(other)
 end

@@ -74,7 +74,7 @@ defmodule Loopback.Replay do
 
     result =
       if req_body == "" and parsed_method in [:get, :head, :delete, :options] do
-        :httpc.request(parsed_method, {url_charlist, req_headers}, [], [body_format: :binary])
+        :httpc.request(parsed_method, {url_charlist, req_headers}, [], body_format: :binary)
       else
         content_type = content_type_from_headers(headers)
 
@@ -82,7 +82,7 @@ defmodule Loopback.Replay do
           parsed_method,
           {url_charlist, req_headers, content_type, req_body},
           [],
-          [body_format: :binary]
+          body_format: :binary
         )
       end
 

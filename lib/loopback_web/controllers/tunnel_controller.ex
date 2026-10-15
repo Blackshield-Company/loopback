@@ -74,7 +74,7 @@ defmodule LoopbackWeb.TunnelController do
 
         result =
           if chaos_body == "" and method in [:get, :head, :delete, :options] do
-            :httpc.request(method, {url_charlist, req_headers}, [], [body_format: :binary])
+            :httpc.request(method, {url_charlist, req_headers}, [], body_format: :binary)
           else
             content_type = content_type_from_headers(conn.req_headers)
 
@@ -82,7 +82,7 @@ defmodule LoopbackWeb.TunnelController do
               method,
               {url_charlist, req_headers, content_type, chaos_body},
               [],
-              [body_format: :binary]
+              body_format: :binary
             )
           end
 
