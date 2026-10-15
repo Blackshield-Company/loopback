@@ -12,6 +12,7 @@ defmodule LoopbackWeb.TunnelControllerTest do
     Registry.clear()
     TransformRegistry.clear()
     ETS.clear()
+    Loopback.Chaos.reset()
     {:ok, pid} = TestTargetServer.start()
     {:ok, target_url: TestTargetServer.url(pid), server: pid}
   end
